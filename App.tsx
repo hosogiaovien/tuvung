@@ -7,12 +7,18 @@ import {
   Gamepad2, Bus, Sun, MapPin, Paintbrush, Hammer,
   // New Beginner Icons Extension
   MessageCircle, Mountain, Box, Smartphone, Medal, CreditCard, Activity, ArrowUpRight, Play, Wrench, Tag, Layers, Wifi, MousePointer, ShoppingCart, Gift,
+  // New Beginner Expansion 2
+  Hash, Coffee, Apple, Armchair, Bath, Pen, Car, Tractor, Umbrella, Scissors, Anchor, Ghost, Key,
   // New Intermediate Icons
   HeartHandshake, Building, Film, ChefHat, Tent, Stethoscope, CloudLightning, Siren, Coins, Laptop,
+  // New Intermediate Expansion 3
+  FlaskConical, CloudRain, User, Wallet, MessageSquare, Truck, PartyPopper, PawPrint,
   // New Advanced Icons
   Globe2, Landmark, Crown, Languages, Users2, PieChart, FileSearch, Factory, ShieldAlert, MonitorSmartphone,
+  // Advanced Expansion 2
+  Newspaper, TestTube, Leaf as Leaf2, Gavel as Gavel2, PenTool, BookOpenCheck, HardHat, Radio, Zap as Zap2, Component, Scale as Scale2, Lightbulb as Lightbulb2,
   // New Expert Icons
-  Scroll, Binary, Theater, Anchor, Sprout, Microscope as Microscope2, Fingerprint
+  Scroll, Binary, Theater, Sprout, Microscope as Microscope2, Fingerprint
 } from 'lucide-react';
 import { Difficulty, GameState, Question, GameStats, Topic } from './types';
 import { TOPICS } from './data/vocab';
@@ -83,6 +89,20 @@ const iconMap: Record<string, React.FC<any>> = {
   'MousePointer': MousePointer,
   'ShoppingCart': ShoppingCart,
   'Gift': Gift,
+  // Beginner Expansion 2
+  'Hash': Hash,
+  'Coffee': Coffee,
+  'Apple': Apple,
+  'Armchair': Armchair,
+  'Bath': Bath,
+  'Pen': Pen,
+  'Car': Car,
+  'Tractor': Tractor,
+  'Umbrella': Umbrella,
+  'Scissors': Scissors,
+  'Anchor': Anchor,
+  'Ghost': Ghost,
+  'Key': Key,
   // New Intermediate Icons
   'HeartHandshake': HeartHandshake,
   'Building': Building,
@@ -94,6 +114,15 @@ const iconMap: Record<string, React.FC<any>> = {
   'Siren': Siren,
   'Coins': Coins,
   'Laptop': Laptop,
+  // Intermediate Expansion 3
+  'FlaskConical': FlaskConical,
+  'CloudRain': CloudRain,
+  'User': User,
+  'Wallet': Wallet,
+  'MessageSquare': MessageSquare,
+  'Truck': Truck,
+  'PartyPopper': PartyPopper,
+  'PawPrint': PawPrint,
   // New Advanced Icons
   'Globe2': Globe2,
   'Landmark': Landmark,
@@ -105,11 +134,23 @@ const iconMap: Record<string, React.FC<any>> = {
   'Factory': Factory,
   'ShieldAlert': ShieldAlert,
   'MonitorSmartphone': MonitorSmartphone,
+  // Advanced Expansion 2
+  'Newspaper': Newspaper,
+  'TestTube': TestTube,
+  'Leaf2': Leaf2,
+  'Gavel2': Gavel2,
+  'PenTool': PenTool,
+  'BookOpenCheck': BookOpenCheck,
+  'HardHat': HardHat,
+  'Radio': Radio,
+  'Zap2': Zap2,
+  'Component': Component,
+  'Scale2': Scale2,
+  'Lightbulb2': Lightbulb2,
   // New Expert Icons
   'Scroll': Scroll,
   'Binary': Binary,
   'Theater': Theater,
-  'Anchor': Anchor,
   'Sprout': Sprout,
   'Fingerprint': Fingerprint
 };
