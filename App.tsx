@@ -15,8 +15,6 @@ import {
   FlaskConical, CloudRain, User, Wallet, MessageSquare, Truck, PartyPopper, PawPrint,
   // New Advanced Icons
   Globe2, Landmark, Crown, Languages, Users2, PieChart, FileSearch, Factory, ShieldAlert, MonitorSmartphone,
-  // Advanced Expansion 2
-  Newspaper, TestTube, Leaf as Leaf2, Gavel as Gavel2, PenTool, BookOpenCheck, HardHat, Radio, Zap as Zap2, Component, Scale as Scale2, Lightbulb as Lightbulb2,
   // New Expert Icons
   Scroll, Binary, Theater, Sprout, Microscope as Microscope2, Fingerprint
 } from 'lucide-react';
@@ -134,19 +132,6 @@ const iconMap: Record<string, React.FC<any>> = {
   'Factory': Factory,
   'ShieldAlert': ShieldAlert,
   'MonitorSmartphone': MonitorSmartphone,
-  // Advanced Expansion 2
-  'Newspaper': Newspaper,
-  'TestTube': TestTube,
-  'Leaf2': Leaf2,
-  'Gavel2': Gavel2,
-  'PenTool': PenTool,
-  'BookOpenCheck': BookOpenCheck,
-  'HardHat': HardHat,
-  'Radio': Radio,
-  'Zap2': Zap2,
-  'Component': Component,
-  'Scale2': Scale2,
-  'Lightbulb2': Lightbulb2,
   // New Expert Icons
   'Scroll': Scroll,
   'Binary': Binary,
