@@ -373,10 +373,10 @@ function App() {
         VocabMaster
       </h1>
       
-      {/* Updated Introduction Text: Single Line, Centered, No Wrapping */}
-      <p className="text-slate-300 text-lg md:text-xl mb-8 w-full text-center font-medium text-cyan-100/90 whitespace-nowrap overflow-hidden text-ellipsis">
-        Luyện từ vựng Tiếng Anh cùng thầy Toán - Quốc Hưng.
-      </p>
+      <div className="text-slate-300 text-lg md:text-xl mb-8 w-full text-center font-medium text-cyan-100/90 flex flex-col items-center gap-1">
+        <span>Luyện từ vựng Tiếng Anh</span>
+        <span>cùng thầy Toán - Quốc Hưng.</span>
+      </div>
 
       <div className="w-full max-w-md space-y-3">
         <label className="text-slate-400 text-sm uppercase tracking-wider font-bold mb-2 block">
