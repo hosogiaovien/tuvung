@@ -1,4 +1,3 @@
-
 export const speakWord = (text: string) => {
   if (!('speechSynthesis' in window)) {
     return;
@@ -6,52 +5,52 @@ export const speakWord = (text: string) => {
 
   const synth = window.speechSynthesis;
 
-  // Mobile fix: Cancel any currently playing audio immediately.
-  // This prevents the queue from getting stuck on Android/iOS when tapping quickly.
+  // FIX QUAN TRỌNG CHO ANDROID:
+  // Trên Chrome Android, bộ đọc thường xuyên bị kẹt ở trạng thái "paused" hoặc "pending".
+  // Gọi resume() trước tiên sẽ "đánh thức" nó dậy.
+  if (synth.paused) {
+    synth.resume();
+  }
+
+  // Hủy các lệnh cũ đang bị kẹt trong hàng đợi
   synth.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
 
-  // CRITICAL FOR MOBILE: 
-  // Set the language explicitly. This allows the OS to use its default engine 
-  // even if the `getVoices()` list hasn't loaded yet (which is common on first click).
+  // Thiết lập ngôn ngữ là bắt buộc để Mobile nhận diện đúng giọng Anh-Mỹ
   utterance.lang = 'en-US';
-
-  // Standardize settings for clear pronunciation
+  
+  // Tốc độ và âm lượng chuẩn
   utterance.rate = 0.9; 
-  utterance.pitch = 1.0;
   utterance.volume = 1.0;
 
-  // Attempt to find a high-quality voice synchronously.
-  // We DO NOT wait for onvoiceschanged because waiting breaks the "user gesture" requirement
-  // on mobile browsers, causing the audio to be blocked.
+  // Lấy danh sách giọng (có thể rỗng trên lần chạm đầu tiên ở mobile)
   const voices = synth.getVoices();
   
   if (voices.length > 0) {
-    // Try to find a preferred female/native voice
+    // Tìm giọng tiếng Anh Mỹ ưu tiên
+    // Chúng ta tìm giọng có "Google US", "Samantha" (iOS), hoặc "Zira" (Windows)
+    // Hoặc đơn giản là giọng en-US bất kỳ.
     const preferredVoice = voices.find(v => 
-      // Strict language check to ensure American English accent
       (v.lang === 'en-US' || v.lang === 'en_US') && 
-      // Prioritize common high-quality voice names found on OSs
-      (
-        v.name.includes('Samantha') || // iOS / macOS
-        v.name.includes('Google US English') || // Android / Chrome
-        v.name.includes('Zira') || // Windows
-        v.name.includes('Premium') ||
-        v.name.toLowerCase().includes('female')
-      )
+      !v.name.includes('Male') // Ưu tiên giọng nữ nếu tên không chứa "Male"
     );
 
-    // Fallback to any available English voice if the specific ones aren't found
-    const anyEnglishVoice = voices.find(v => v.lang.startsWith('en'));
-
+    // Nếu tìm thấy giọng phù hợp thì set, còn không thì ĐỂ NGUYÊN (null).
+    // Để nguyên (null) quan trọng vì OS sẽ tự dùng giọng mặc định tốt nhất của nó.
+    // Cố ép gán giọng sai có thể làm mất tiếng.
     if (preferredVoice) {
       utterance.voice = preferredVoice;
-    } else if (anyEnglishVoice) {
-      utterance.voice = anyEnglishVoice;
     }
   }
 
-  // Speak immediately. 
+  // Xử lý sự kiện lỗi để debug nếu cần (optional)
+  utterance.onerror = (event) => {
+    console.error('TTS Error:', event);
+    // Nếu lỗi, thử ép resume lần nữa
+    synth.resume();
+  };
+
+  // Phát âm thanh
   synth.speak(utterance);
 };
