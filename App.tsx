@@ -451,6 +451,9 @@ function App() {
     const question = questions[currentQIndex];
     if (!question) return null;
 
+    // Handle split examples by '|'
+    const examples = question.targetWord.example ? question.targetWord.example.split('|') : [];
+
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-6 max-w-3xl mx-auto w-full">
         {showConfetti && <ParticleConfetti />}
@@ -492,10 +495,21 @@ function App() {
             <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-2 tracking-tight break-words">
               {question.targetWord.word}
             </h2>
-            {isAnswered && (
-               <div className="animate-pop mt-4 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20 text-blue-200 italic">
-                  <BookOpen className="w-4 h-4 inline mr-2" />
-                  "{question.targetWord.example}"
+            
+            {/* NEW: Enhanced Example Display Area */}
+            {isAnswered && examples.length > 0 && (
+               <div className="animate-pop mt-6 p-5 bg-slate-700/50 rounded-2xl border border-cyan-500/30 relative text-left">
+                  <div className="absolute -top-3 left-4 px-2 bg-slate-800 text-cyan-400 text-xs font-bold uppercase tracking-wider border border-cyan-500/30 rounded">
+                    Ví dụ minh họa
+                  </div>
+                  <div className="text-slate-300 space-y-2 pt-1">
+                    {examples.map((ex, idx) => (
+                      <div key={idx} className="flex gap-3 items-start">
+                        <BookOpen className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
+                        <span className="italic">"{ex.trim()}"</span>
+                      </div>
+                    ))}
+                  </div>
                </div>
             )}
           </div>
