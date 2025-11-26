@@ -1,59 +1,58 @@
-
 export const speakWord = (text: string) => {
   if (!('speechSynthesis' in window)) {
-    console.warn('Browser does not support text-to-speech');
     return;
   }
 
   const synth = window.speechSynthesis;
 
-  // Cancel any current speaking
-  if (synth.speaking) {
+  // QUAN TRỌNG VỚI MOBILE:
+  // Mobile browser rất dễ bị kẹt hàng đợi (queue) nếu nhấn liên tục.
+  // Phải hủy lệnh đọc trước đó ngay lập tức.
+  if (synth.speaking || synth.pending) {
     synth.cancel();
   }
 
   const utterance = new SpeechSynthesisUtterance(text);
+
+  // QUAN TRỌNG VỚI MOBILE:
+  // Trên điện thoại, getVoices() thường trả về rỗng lúc đầu hoặc load chậm.
+  // Nếu chờ load xong mới đọc thì browser sẽ chặn vì mất "user interaction context".
+  // Giải pháp: Set cứng lang='en-US'. Hệ điều hành sẽ tự dùng giọng mặc định (thường là rất tốt trên iOS/Android)
+  // ngay cả khi chưa load được danh sách voice object.
+  utterance.lang = 'en-US';
+
+  // Tinh chỉnh tốc độ đọc cho dễ nghe
+  utterance.rate = 0.9; 
+  utterance.pitch = 1.0;
+  utterance.volume = 1.0;
+
+  // Cố gắng tìm giọng nữ/bản địa nếu danh sách giọng đã có sẵn (cached)
+  // Không chờ đợi (async) để tránh bị chặn trên mobile.
+  const voices = synth.getVoices();
   
-  // Get available voices
-  let voices = synth.getVoices();
-
-  // Helper to select voice
-  const selectVoice = () => {
-    // Prioritize English voices
+  if (voices.length > 0) {
     const englishVoices = voices.filter(v => v.lang.includes('en'));
-
-    // Try to find a "female" sounding voice based on common names or metadata
-    // Note: 'Microsoft Zira', 'Google US English' (often female), 'Samantha' are common
-    let femaleVoice = englishVoices.find(v => 
-      v.name.includes('Female') || 
-      v.name.includes('Zira') || 
+    
+    // Ưu tiên tìm các giọng nữ chất lượng cao phổ biến trên mobile/desktop
+    const preferredVoice = englishVoices.find(v => 
+      // iOS
       v.name.includes('Samantha') || 
-      v.name.includes('Google US English') ||
-      v.name.includes('Venus')
+      // Android Chrome
+      v.name.includes('Google US English') || 
+      // Windows / General
+      v.name.includes('Zira') || 
+      v.name.includes('Female') ||
+      v.name.includes('Premium')
     );
 
-    // Fallback to any English voice if specific female voice not found
-    const selectedVoice = femaleVoice || englishVoices[0] || voices[0];
-
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    } else if (englishVoices.length > 0) {
+        // Fallback lấy giọng Anh đầu tiên tìm thấy
+        utterance.voice = englishVoices[0];
     }
-    
-    // Adjust settings for better clarity
-    utterance.rate = 0.85; // Slightly slower for learning
-    utterance.pitch = 1.1; // Slightly higher pitch often sounds more feminine/clear
-    utterance.volume = 1;
-
-    synth.speak(utterance);
-  };
-
-  // Chrome loads voices asynchronously
-  if (voices.length === 0) {
-    synth.onvoiceschanged = () => {
-      voices = synth.getVoices();
-      selectVoice();
-    };
-  } else {
-    selectVoice();
   }
+
+  // Thực thi ngay lập tức
+  synth.speak(utterance);
 };
