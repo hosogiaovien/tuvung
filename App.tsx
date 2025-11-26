@@ -9,14 +9,34 @@ import {
   MessageCircle, Mountain, Box, Smartphone, Medal, CreditCard, Activity, ArrowUpRight, Play, Wrench, Tag, Layers, Wifi, MousePointer, ShoppingCart, Gift,
   // New Beginner Expansion 2
   Hash, Coffee, Apple, Armchair, Bath, Pen, Car, Tractor, Umbrella, Scissors, Anchor, Ghost, Key,
+  // New Beginner Expansion 3 (x10)
+  CalendarDays, Move, Guitar, UtensilsCrossed, Glasses, School, SmilePlus, Store, Navigation, Cake,
+  // New Beginner Expansion 4 (x10)
+  Link, Shapes,
+  // New Beginner Expansion 5 (Double x10)
+  Trash2, Baby, Star as Star2, Snowflake, Moon, Cloud, CheckSquare, Heart, Sparkles, AlertTriangle,
   // New Intermediate Icons
   HeartHandshake, Building, Film, ChefHat, Tent, Stethoscope, CloudLightning, Siren, Coins, Laptop,
   // New Intermediate Expansion 3
   FlaskConical, CloudRain, User, Wallet, MessageSquare, Truck, PartyPopper, PawPrint,
+  // New Intermediate Expansion 4 (Double x10)
+  Megaphone, Compass, Landmark, Briefcase as Briefcase2, Users as Users3, Globe as Globe3, Newspaper as Newspaper2, Clapperboard, Award, Target,
+  // New Intermediate Expansion 5 (x10)
+  BedDouble, Banknote, Image, Joystick, Package, SprayCan, Hotel, Mail,
+  // New Intermediate Expansion 6 (x10)
+  Telescope, Mic,
   // New Advanced Icons
-  Globe2, Landmark, Crown, Languages, Users2, PieChart, FileSearch, Factory, ShieldAlert, MonitorSmartphone,
+  Globe2, Landmark as Landmark2, Crown, Languages, Users2, PieChart, FileSearch, Factory, ShieldAlert, MonitorSmartphone,
+  // New Advanced Expansion (x10)
+  Newspaper, Wheat, BatteryCharging, FlaskRound, BookOpenCheck, Gem, Carrot, Network, CloudFog, Fish,
   // New Expert Icons
-  Scroll, Binary, Theater, Sprout, Microscope as Microscope2, Fingerprint
+  Scroll, Binary, Theater, Sprout, Microscope as Microscope2, Fingerprint,
+  // New Expert Expansion (x10)
+  Flag, Syringe, Music2, Map, Flower, ShieldCheck, Frame, Dna, Compass as Compass2, Database,
+  // New Expert Expansion 2 (x10)
+  Skull, Copyright, Sigma, Vote, Feather, Waves, Lock, Camera, Bone, Calculator,
+  // New Expert Expansion 3 (x10)
+  Hourglass, Droplets, Bug, Container, Eye, Speaker, BrainCog, TestTube, Radar, Magnet
 } from 'lucide-react';
 import { Difficulty, GameState, Question, GameStats, Topic } from './types';
 import { TOPICS } from './data/vocab';
@@ -63,6 +83,7 @@ const iconMap: Record<string, React.FC<any>> = {
   'Rocket': Rocket,
   'Quote': Quote,
   'LibraryBig': LibraryBig,
+  'Trophy': Trophy, // Added Trophy here
   // New Beginner Icons
   'Gamepad2': Gamepad2,
   'Bus': Bus,
@@ -101,6 +122,31 @@ const iconMap: Record<string, React.FC<any>> = {
   'Anchor': Anchor,
   'Ghost': Ghost,
   'Key': Key,
+  // Beginner Expansion 3
+  'CalendarDays': CalendarDays,
+  'Move': Move,
+  'Guitar': Guitar,
+  'UtensilsCrossed': UtensilsCrossed,
+  'Glasses': Glasses,
+  'School': School,
+  'SmilePlus': SmilePlus,
+  'Store': Store,
+  'Navigation': Navigation,
+  'Cake': Cake,
+  // Beginner Expansion 4
+  'Link': Link,
+  'Shapes': Shapes,
+  // Beginner Expansion 5
+  'Trash2': Trash2,
+  'Baby': Baby,
+  'Star': Star,
+  'Snowflake': Snowflake,
+  'Moon': Moon,
+  'Cloud': Cloud,
+  'CheckSquare': CheckSquare,
+  'Heart': Heart,
+  'Sparkles': Sparkles,
+  'AlertTriangle': AlertTriangle,
   // New Intermediate Icons
   'HeartHandshake': HeartHandshake,
   'Building': Building,
@@ -121,9 +167,32 @@ const iconMap: Record<string, React.FC<any>> = {
   'Truck': Truck,
   'PartyPopper': PartyPopper,
   'PawPrint': PawPrint,
+  // Intermediate Expansion 4
+  'Megaphone': Megaphone,
+  'Compass': Compass,
+  'Landmark': Landmark,
+  'Briefcase2': Briefcase,
+  'Users3': Users,
+  'Globe3': Globe,
+  'Newspaper2': Newspaper,
+  'Clapperboard': Clapperboard,
+  'Award': Award,
+  'Target': Target,
+  // Intermediate Expansion 5
+  'BedDouble': BedDouble,
+  'Banknote': Banknote,
+  'Image': Image,
+  'Joystick': Joystick,
+  'Package': Package,
+  'SprayCan': SprayCan,
+  'Hotel': Hotel,
+  'Mail': Mail,
+  // Intermediate Expansion 6
+  'Telescope': Telescope,
+  'Mic': Mic,
   // New Advanced Icons
   'Globe2': Globe2,
-  'Landmark': Landmark,
+  'Landmark2': Landmark,
   'Crown': Crown,
   'Languages': Languages,
   'Users2': Users2,
@@ -132,12 +201,56 @@ const iconMap: Record<string, React.FC<any>> = {
   'Factory': Factory,
   'ShieldAlert': ShieldAlert,
   'MonitorSmartphone': MonitorSmartphone,
+  // New Advanced Expansion
+  'Newspaper': Newspaper,
+  'Wheat': Wheat,
+  'BatteryCharging': BatteryCharging,
+  'FlaskRound': FlaskRound,
+  'BookOpenCheck': BookOpenCheck,
+  'Gem': Gem,
+  'Carrot': Carrot,
+  'Network': Network,
+  'CloudFog': CloudFog,
+  'Fish': Fish,
   // New Expert Icons
   'Scroll': Scroll,
   'Binary': Binary,
   'Theater': Theater,
   'Sprout': Sprout,
-  'Fingerprint': Fingerprint
+  'Fingerprint': Fingerprint,
+  // New Expert Expansion
+  'Flag': Flag,
+  'Syringe': Syringe,
+  'Music2': Music2,
+  'Map': Map,
+  'Flower': Flower,
+  'ShieldCheck': ShieldCheck,
+  'Frame': Frame,
+  'Dna': Dna,
+  'Compass2': Compass,
+  'Database': Database,
+  // New Expert Expansion 2
+  'Skull': Skull,
+  'Copyright': Copyright,
+  'Sigma': Sigma,
+  'Vote': Vote,
+  'Feather': Feather,
+  'Waves': Waves,
+  'Lock': Lock,
+  'Camera': Camera,
+  'Bone': Bone,
+  'Calculator': Calculator,
+  // New Expert Expansion 3
+  'Hourglass': Hourglass,
+  'Droplets': Droplets,
+  'Bug': Bug,
+  'Container': Container,
+  'Eye': Eye,
+  'Speaker': Speaker,
+  'BrainCog': BrainCog,
+  'TestTube': TestTube,
+  'Radar': Radar,
+  'Magnet': Magnet
 };
 
 function App() {
