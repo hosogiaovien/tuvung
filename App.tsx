@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { 
   Brain, Trophy, ChevronRight, RotateCcw, Volume2, Star, CheckCircle, XCircle, Zap, BookOpen, ArrowLeft, Grid, 
@@ -42,6 +43,7 @@ import { Difficulty, GameState, Question, GameStats, Topic } from './types';
 import { TOPICS } from './data/vocab';
 import { generateQuiz, getCompliment } from './utils/gameLogic';
 import { playSound } from './utils/sounds';
+import { speakWord } from './utils/tts';
 import { Button } from './components/Button';
 import { ParticleConfetti } from './components/ParticleConfetti';
 
@@ -360,6 +362,11 @@ function App() {
     }
   };
 
+  const handleSpeak = (e: React.MouseEvent, text: string) => {
+    e.stopPropagation();
+    speakWord(text);
+  };
+
   // --- Render Helpers ---
 
   const renderDifficultyMenu = () => (
@@ -492,9 +499,20 @@ function App() {
                  {selectedTopic?.title}
                </span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-2 tracking-tight break-words">
-              {question.targetWord.word}
-            </h2>
+            
+            {/* Target Word with Audio */}
+            <div 
+              className="inline-flex items-center justify-center gap-3 cursor-pointer hover:text-cyan-300 transition-colors active:scale-95 group"
+              onClick={(e) => handleSpeak(e, question.targetWord.word)}
+              title="Nhấn để nghe phát âm"
+            >
+              <h2 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight break-words select-none">
+                {question.targetWord.word}
+              </h2>
+              <div className="bg-white/10 p-2 rounded-full group-hover:bg-cyan-500 group-hover:text-white transition-all">
+                <Volume2 className="w-6 h-6 md:w-8 md:h-8" />
+              </div>
+            </div>
             
             {/* NEW: Enhanced Example Display Area */}
             {isAnswered && examples.length > 0 && (
@@ -504,9 +522,9 @@ function App() {
                   </div>
                   <div className="text-slate-300 space-y-2 pt-1">
                     {examples.map((ex, idx) => (
-                      <div key={idx} className="flex gap-3 items-start">
-                        <BookOpen className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
-                        <span className="italic">"{ex.trim()}"</span>
+                      <div key={idx} className="flex gap-3 items-start group cursor-pointer" onClick={(e) => handleSpeak(e, ex)}>
+                        <BookOpen className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                        <span className="italic group-hover:text-white transition-colors">"{ex.trim()}"</span>
                       </div>
                     ))}
                   </div>
