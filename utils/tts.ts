@@ -1,3 +1,4 @@
+
 export const speakWord = (text: string) => {
   if (!('speechSynthesis' in window)) {
     return;
@@ -5,54 +6,52 @@ export const speakWord = (text: string) => {
 
   const synth = window.speechSynthesis;
 
-  // QUAN TRỌNG VỚI MOBILE:
-  // Mobile browser rất dễ bị kẹt hàng đợi (queue) nếu nhấn liên tục.
-  // Phải hủy lệnh đọc trước đó ngay lập tức.
-  if (synth.speaking || synth.pending) {
-    synth.cancel();
-  }
+  // Mobile fix: Cancel any currently playing audio immediately.
+  // This prevents the queue from getting stuck on Android/iOS when tapping quickly.
+  synth.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
 
-  // QUAN TRỌNG VỚI MOBILE:
-  // Trên điện thoại, getVoices() thường trả về rỗng lúc đầu hoặc load chậm.
-  // Nếu chờ load xong mới đọc thì browser sẽ chặn vì mất "user interaction context".
-  // Giải pháp: Set cứng lang='en-US'. Hệ điều hành sẽ tự dùng giọng mặc định (thường là rất tốt trên iOS/Android)
-  // ngay cả khi chưa load được danh sách voice object.
+  // CRITICAL FOR MOBILE: 
+  // Set the language explicitly. This allows the OS to use its default engine 
+  // even if the `getVoices()` list hasn't loaded yet (which is common on first click).
   utterance.lang = 'en-US';
 
-  // Tinh chỉnh tốc độ đọc cho dễ nghe
+  // Standardize settings for clear pronunciation
   utterance.rate = 0.9; 
   utterance.pitch = 1.0;
   utterance.volume = 1.0;
 
-  // Cố gắng tìm giọng nữ/bản địa nếu danh sách giọng đã có sẵn (cached)
-  // Không chờ đợi (async) để tránh bị chặn trên mobile.
+  // Attempt to find a high-quality voice synchronously.
+  // We DO NOT wait for onvoiceschanged because waiting breaks the "user gesture" requirement
+  // on mobile browsers, causing the audio to be blocked.
   const voices = synth.getVoices();
   
   if (voices.length > 0) {
-    const englishVoices = voices.filter(v => v.lang.includes('en'));
-    
-    // Ưu tiên tìm các giọng nữ chất lượng cao phổ biến trên mobile/desktop
-    const preferredVoice = englishVoices.find(v => 
-      // iOS
-      v.name.includes('Samantha') || 
-      // Android Chrome
-      v.name.includes('Google US English') || 
-      // Windows / General
-      v.name.includes('Zira') || 
-      v.name.includes('Female') ||
-      v.name.includes('Premium')
+    // Try to find a preferred female/native voice
+    const preferredVoice = voices.find(v => 
+      // Strict language check to ensure American English accent
+      (v.lang === 'en-US' || v.lang === 'en_US') && 
+      // Prioritize common high-quality voice names found on OSs
+      (
+        v.name.includes('Samantha') || // iOS / macOS
+        v.name.includes('Google US English') || // Android / Chrome
+        v.name.includes('Zira') || // Windows
+        v.name.includes('Premium') ||
+        v.name.toLowerCase().includes('female')
+      )
     );
+
+    // Fallback to any available English voice if the specific ones aren't found
+    const anyEnglishVoice = voices.find(v => v.lang.startsWith('en'));
 
     if (preferredVoice) {
       utterance.voice = preferredVoice;
-    } else if (englishVoices.length > 0) {
-        // Fallback lấy giọng Anh đầu tiên tìm thấy
-        utterance.voice = englishVoices[0];
+    } else if (anyEnglishVoice) {
+      utterance.voice = anyEnglishVoice;
     }
   }
 
-  // Thực thi ngay lập tức
+  // Speak immediately. 
   synth.speak(utterance);
 };
