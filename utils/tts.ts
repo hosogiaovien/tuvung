@@ -1,3 +1,4 @@
+
 export const speakWord = (text: string) => {
   if (!('speechSynthesis' in window)) {
     return;
