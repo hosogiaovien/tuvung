@@ -400,6 +400,18 @@ function App() {
           </button>
         ))}
       </div>
+
+      {/* Visit Counter */}
+      <div className="mt-12 opacity-80 hover:opacity-100 transition-opacity duration-300">
+        <a href="https://www.hitwebcounter.com/" target="_blank" rel="noopener noreferrer">
+          <img 
+            src="https://hitwebcounter.com/counter/counter.php?page=21459669&style=0042&nbdigits=5&type=page&initCount=220" 
+            title="Free Tools" 
+            alt="Free Tools" 
+            style={{ border: 0 }}
+          />
+        </a>
+      </div>
     </div>
   );
 
